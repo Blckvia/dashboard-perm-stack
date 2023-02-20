@@ -1,0 +1,22 @@
+.home {
+    display: flex;
+
+    .homeContainer {
+        flex: 6;
+
+        .widgets {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+    }
+
+    .ag-theme-alpine {
+        margin-left: 5px;
+        .button {
+            background-color: #7451f8;
+            color: #fffefe;
+            margin: 10px;
+        }
+    }
+}
