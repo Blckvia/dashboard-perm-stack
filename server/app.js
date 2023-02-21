@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const sequelize = require('./util/database');
 
 const Author = require('./models/author');
+const Books = require('./models/books');
+
 
 const tableRoutes = require('./routes/tables');
 
@@ -31,6 +33,8 @@ app.use((error, req, res, next) => {
   const message = error.message;
   res.status(status).json({message: message})
 });
+
+Author.hasMany(Books, {foreignKey: 'author_id' ,constraints: true, onDelete: 'CASCADE' })
 
 sequelize
   .sync()

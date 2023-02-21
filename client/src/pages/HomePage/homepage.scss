@@ -13,10 +13,26 @@
 
     .ag-theme-alpine {
         margin-left: 5px;
+        height: 310px;
         .button {
             background-color: #7451f8;
             color: #fffefe;
             margin: 10px;
+        }
+        .box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            background: whitesmoke;
+            border: '2px solid #000';
+            box-shadow: 24px;
+            padding: 4px;
+
+            .modal-modal-description {
+                margin-top: 2px;
+            }
         }
     }
 }

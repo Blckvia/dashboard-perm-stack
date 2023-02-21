@@ -2,32 +2,32 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const Author = sequelize.define('author', {
-    author_id: {
+const Books = sequelize.define('book', {
+    book_id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    first_name: {
-        type: Sequelize.STRING(30),
+    book_name: {
+        type: Sequelize.STRING(128),
         allowNull: false
     },
-    last_name: {
-        type: Sequelize.STRING(30),
-        allowNull: false
-    },
-    birth_date: {
+    originally_published: {
         type: Sequelize.DATEONLY,
         allowNull: false
     },
-    death_age: {
+    isbn: {
+        type: Sequelize.STRING(32),
+        allowNull: false
+    },
+    price: {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    rating: {
+    raiting: {
         type: Sequelize.DECIMAL,
         allowNull: false
     }
 }, {timestamps: false});
 
-module.exports = Author;
+module.exports = Books;
