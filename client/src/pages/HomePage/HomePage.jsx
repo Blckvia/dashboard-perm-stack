@@ -37,7 +37,7 @@ function HomePage() {
   const onSelectionChanged = (gridOptions) => {
     const selectedRows = gridOptions.api.getSelectedRows();
     setSelectedAuthorId(selectedRows[0].author_id)
-    // console.log(selectedRows[0]);
+    console.log(selectedRows[0]);
   }
   
   const handleDelete = async (id) => {
