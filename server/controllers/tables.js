@@ -33,14 +33,13 @@ exports.getAuthorTable = async (req, res, next) => {
 
 exports.deleteFromAuthor = (req, res, next) => {
     const id = req.params.id;
-    Author.findById(id)
+    Author.destroy({where: {author_id: id}})
     .then(author => {
         if (!author) {
             const error = new Error('Could not find an Author');
             error.statusCode = 404;
             throw error;
         };
-        author.destroy();
         res.status(200).json({message: 'Author was deleted.'})
     })
     .catch(err => {
@@ -49,5 +48,4 @@ exports.deleteFromAuthor = (req, res, next) => {
         }
         next(err);
     })
-
 }

@@ -1,11 +1,9 @@
 import Navbar from '../../components/navbar/Navbar';
 import Sidebar from '../../components/sidebar/Sidebar';
 // import Widget from "../../components/widget/Widget";
-// import {Tables} from "../../components/table/Tables";
 import './homepage.scss';
 
 import { useEffect, useState, useRef, useMemo } from 'react';
-import axios from 'axios';
 
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -16,44 +14,46 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import EditIcon from '@mui/icons-material/Edit';
 
+const columnDefs = [
+  { headerName: 'Id', field: 'author_id' },
+  { headerName: 'First Name', field: 'first_name' },
+  { headerName: 'Last Name', field: 'last_name' },
+  { headerName: 'Birth Date', field: 'birth_date'},
+  { headerName: 'Age of Death', field: 'death_age'},
+  { headerName: 'Raiting', field: 'rating' },
+];
+
+const defaultColDef = {
+    sortable: true,
+    filter: true,
+    flex: 1,
+  };
+
 function HomePage() {
-  const gridRef = useRef();
-  const [rowData, setRowData] = useState([]);
-  const [columnDefs, setColumnDefs] = useState([
-    { headerName: 'Id', field: 'author_id' },
-    { headerName: 'First Name', field: 'first_name' },
-    { headerName: 'Last Name', field: 'last_name' },
-    { headerName: 'Birth Date', field: 'birth_date'},
-    { headerName: 'Age of Death', field: 'death_age'},
-    { headerName: 'Raiting', field: 'rating' },
-  ]);
 
-  const defaultColDef = useMemo(
-    () => ({
-      sortable: true,
-      filter: true,
-      flex: 1,
-    }),
-    []
-  );
+  const [authors, setAuthors] = useState([]);
+  const [selectedAuthorId, setSelectedAuthorId] = useState();
 
+  const onSelectionChanged = (gridOptions) => {
+    const selectedRows = gridOptions.api.getSelectedRows();
+    setSelectedAuthorId(selectedRows[0].author_id)
+    // console.log(selectedRows[0]);
+  }
+  
   const handleDelete = async (id) => {
-    // const newData = rowData.filter(el => el.id !== id)
-    // setRowData(newData);
     try {
-      await fetch(`tables/author/&{id}`, {method: 'DELETE'})
-    //   await axios.delete(`/notes/${id}`);
-
-      // Remove the deleted note from the list
+      await fetch(`tables/author/${id}`, {method: 'DELETE'})
+      const newAuthors = authors.filter(el => el.author_id !== id)
+      setAuthors(newAuthors);
     } catch (err) {
       console.error(err);
     }
   };
-
+  
   useEffect(() => {
     fetch('/tables/author')
       .then((res) => res.json())
-      .then((rowData) => setRowData(rowData.authors))
+      .then((rowData) => setAuthors(rowData.authors))
       .catch((err) => console.log(err));
   }, []);
 
@@ -69,9 +69,6 @@ function HomePage() {
                     <Widget />
                     <Widget />
                 </div> */}
-        {/* <div> 
-                    <Tables rowData={rowData}/> 
-                  </div>  */}
 
         <div className='ag-theme-alpine' style={{ height: 310 }}>
           <Button
@@ -91,7 +88,8 @@ function HomePage() {
             Edit
           </Button>
           <Button
-            onClick={() => handleDelete(rowData.author_id)}
+            disabled={!selectedAuthorId}
+            onClick={() => handleDelete(selectedAuthorId)}
             className='button'
             size='small'
             variant='contained'
@@ -100,11 +98,13 @@ function HomePage() {
             Delete
           </Button>
           <AgGridReact
-            ref={gridRef}
-            rowData={rowData}
+            popupParent={document.body}
+            rowData={authors}
             animateRows={true}
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
+            rowSelection='single'
+            onSelectionChanged={onSelectionChanged}
           />
         </div>
       </div>
