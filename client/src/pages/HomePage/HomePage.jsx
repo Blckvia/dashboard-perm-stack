@@ -1,7 +1,8 @@
 import Navbar from '../../components/navbar/Navbar';
 import Sidebar from '../../components/sidebar/Sidebar';
 // import Widget from "../../components/widget/Widget";
-import BasicModal from '../../components/modal/modal';
+import AddModal from '../../components/modal/AddModal';
+import EditModal from '../../components/modal/EditModal';
 import './homepage.scss';
 
 import { useEffect, useState } from 'react';
@@ -21,7 +22,7 @@ const authorColumnDefs = [
   { headerName: 'Last Name', field: 'last_name' },
   { headerName: 'Birth Date', field: 'birth_date' },
   { headerName: 'Age of Death', field: 'death_age' },
-  { headerName: 'Raiting', field: 'rating' },
+  { headerName: 'Rating', field: 'rating' },
 ];
 
 const booksColumnDefs = [
@@ -30,7 +31,7 @@ const booksColumnDefs = [
   { headerName: 'Publication date', field: 'originally_published' },
   { headerName: 'isbn', field: 'isbn' },
   { headerName: 'Price', field: 'price' },
-  { headerName: 'Raiting', field: 'raiting' },
+  { headerName: 'Rating', field: 'raiting' },
   // { headerName: 'Author ID', field: 'author_id' },
 ];
 
@@ -86,39 +87,9 @@ function HomePage() {
       <div className='homeContainer'>
         <Navbar />
         <div className='ag-theme-alpine'>
-          {/* <Button
-            onClick={handleOpen}
-            className='button'
-            size='small'
-            variant='contained'
-            endIcon={<SendIcon />}
-          >
-            Add
-          </Button>
-          <Modal
-            open={openModal}
-            onClose={handleClose}
-            aria-labelledby='modal-modal-title'
-            aria-describedby='modal-modal-description'
-          >
-            <Box className='box'>
-              <Typography id='modal-modal-title' variant='h6' component='h2'>
-                Text in a modal
-              </Typography>
-              <Typography id='modal-modal-description'>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-              </Typography>
-            </Box>
-          </Modal> */}
-          < BasicModal />
-          <Button
-            className='button'
-            size='small'
-            variant='contained'
-            endIcon={<EditIcon />}
-          >
-            Edit
-          </Button>
+          <div className='modal-buttons'>
+          <AddModal />
+          <EditModal />
           <Button
             disabled={!selectedAuthorId}
             onClick={() => handleDelete(selectedAuthorId)}
@@ -129,6 +100,7 @@ function HomePage() {
           >
             Delete
           </Button>
+          </div>
           <AgGridReact
             popupParent={document.body}
             rowData={authors}
