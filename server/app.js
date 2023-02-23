@@ -8,7 +8,6 @@ const sequelize = require('./util/database');
 const Author = require('./models/author');
 const Books = require('./models/books');
 
-
 const tableRoutes = require('./routes/tables');
 
 const app = express();
@@ -19,7 +18,10 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, PATCH, DELETE'
+  );
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
@@ -31,15 +33,18 @@ app.use((error, req, res, next) => {
   console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
-  res.status(status).json({message: message})
+  res.status(status).json({ message: message });
 });
 
-Author.hasMany(Books, {foreignKey: 'author_id' ,constraints: true, onDelete: 'CASCADE' })
+Author.hasMany(Books, {
+  foreignKey: 'author_id',
+  constraints: true,
+  onDelete: 'CASCADE',
+});
 
 sequelize
   .sync()
   .then((result) => {
     app.listen(8080);
   })
-  .catch(err => console.log(err));
-
+  .catch((err) => console.log(err));
