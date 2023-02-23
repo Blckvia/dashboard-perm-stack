@@ -1,41 +1,41 @@
 .home {
-    display: flex;
+  display: flex;
 
-    .homeContainer {
-        flex: 6;
+  .homeContainer {
+    flex: 6;
 
-        .widgets {
-            display: flex;
-            padding: 20px;
-            gap: 20px;
-        }
+    .widgets {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
     }
+  }
 
-    .ag-theme-alpine {
-        margin-left: 5px;
-        height: 310px;
-        .button {
-            background-color: #7451f8;
-            color: #fffefe;
-            margin: 10px;
-        }
-        .box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            background: whitesmoke;
-            border: '2px solid #000';
-            box-shadow: 24px;
-            padding: 4px;
-
-            .modal-modal-description {
-                margin-top: 2px;
-            }
-        }
-        .modal-buttons {
-            display: flex;
-        }
+  .ag-theme-alpine {
+    margin-left: 5px;
+    height: 310px;
+    .button {
+      background-color: #7451f8;
+      color: #fffefe;
+      margin: 10px;
     }
+    .box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      background: whitesmoke;
+      border: '2px solid #000';
+      box-shadow: 24px;
+      padding: 4px;
+
+      .modal-modal-description {
+        margin-top: 2px;
+      }
+    }
+    .modal-buttons {
+      display: flex;
+    }
+  }
 }

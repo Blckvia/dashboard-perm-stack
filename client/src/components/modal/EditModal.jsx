@@ -23,8 +23,11 @@ const style = {
   p: 4,
 };
 
-export default function EditModal() {
+export default function EditModal(props) {
   const [open, setOpen] = React.useState(false);
+
+  const { selectedRows, authors, setAuthors } = props;
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -38,26 +41,35 @@ export default function EditModal() {
   });
 
   const onSubmit = (data) => {
-    // handleAdd(data);
+    handleEdit(data, selectedRows.author_id);
+    handleClose();
     reset();
   };
 
-  // const handleAdd = (data) => {
-  //   return fetch(`tables/author/item`, { 
-  //     method: 'POST',
-  //     body: JSON.stringify(data), 
-  //     headers: {
-  //       'Content-type': 'application/json'
-  //     }
-  //   })
-  //   .then(result => {
-  //     // const authors = setAuthors(result);
-  //     console.log(result)
-  //   })
-  //   .catch(err => {
-  //     console.error(err)
-  //   })
-  // }
+  const handleEdit = async (data, id) => {
+    console.log(data);
+    try {
+      await fetch(`tables/author/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+      let newAuthor = Object.assign({ author_id: id }, data);
+      const authorsWithoutEditQuery = authors.filter(
+        (el) => el.author_id !== id
+      );
+      for (let author of authors) {
+        if (author.author_id === id) {
+          authorsWithoutEditQuery.push(newAuthor);
+        }
+        setAuthors(authorsWithoutEditQuery);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className='modal'>
@@ -67,6 +79,7 @@ export default function EditModal() {
         size='small'
         variant='contained'
         endIcon={<EditIcon />}
+        disabled={selectedRows.length === 0}
       >
         Edit
       </Button>
@@ -104,6 +117,7 @@ export default function EditModal() {
                 id='outlined-uncontrolled'
                 label='First Name'
                 helperText='Please enter your name'
+                defaultValue={selectedRows.first_name}
               />
               <div style={{ height: 40, color: 'red' }}>
                 {errors?.last_name && (
@@ -122,6 +136,7 @@ export default function EditModal() {
                 id='outlined-uncontrolled'
                 label='Last Name'
                 helperText='Please enter your surname'
+                defaultValue={selectedRows.last_name}
               />
               <div style={{ height: 40, color: 'red' }}>
                 {errors?.birth_date && (
@@ -147,6 +162,7 @@ export default function EditModal() {
                 id='outlined-uncontrolled'
                 label='Date'
                 helperText='Please enter date YYYY-MM-DD'
+                defaultValue={selectedRows.birth_date}
               />
               <div style={{ height: 40, color: 'red' }}>
                 {errors?.death_age && (
@@ -170,6 +186,7 @@ export default function EditModal() {
                 type='number'
                 label='Age of Death'
                 helperText='Write the year of death of the author'
+                defaultValue={selectedRows.death_age}
               />
               <div style={{ height: 40, color: 'red' }}>
                 {errors?.rating && <p>{errors?.rating?.message || 'Error!'}</p>}
@@ -191,6 +208,7 @@ export default function EditModal() {
                 label='Rating'
                 type='float'
                 helperText='Write an actual raiting'
+                defaultValue={selectedRows.rating}
               />
             </FormGroup>
             <br />

@@ -22,10 +22,12 @@ const style = {
   p: 4,
 };
 
-export default function AddModal() {
+export default function AddModal(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { authors, setAuthors } = props;
+  // console.log(authors);
 
   const {
     register,
@@ -38,25 +40,29 @@ export default function AddModal() {
 
   const onSubmit = (data) => {
     handleAdd(data);
+    handleClose();
     reset();
   };
 
-  const handleAdd = (data) => {
-    return fetch(`tables/author/item`, { 
-      method: 'POST',
-      body: JSON.stringify(data), 
-      headers: {
-        'Content-type': 'application/json'
-      }
-    })
-    .then(result => {
-      // const authors = setAuthors(result);
-      console.log(result)
-    })
-    .catch(err => {
-      console.error(err)
-    })
-  }
+  const handleAdd = async (data) => {
+    try {
+      await fetch(`tables/author/item`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+      const newAuthors = authors.slice();
+      let newId =
+        authors.length === 0 ? 1 : authors[authors.length - 1].author_id + 1;
+      let newAuthor = { author_id: newId, ...data };
+      newAuthors.push(newAuthor);
+      setAuthors(newAuthors);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className='modal'>
