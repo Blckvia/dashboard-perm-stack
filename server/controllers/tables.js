@@ -8,7 +8,7 @@ exports.getAuthorTable = (req, res, next) => {
     .then((authors) => {
       if (!authors) {
         const error = new Error('Could not find authors.');
-        err.statusCode = 422;
+        err.statusCode = 404;
         throw error;
       }
       res
@@ -109,7 +109,7 @@ exports.getBooksTable = (req, res, next) => {
     .then((books) => {
       if (!books) {
         const error = new Error('Could not find books.');
-        err.statusCode = 422;
+        err.statusCode = 404;
         throw error;
       }
       res
